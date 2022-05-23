@@ -1,5 +1,5 @@
 import { Controller, Get, Inject, Post } from '@midwayjs/decorator';
-import { execSync } from 'child_process';
+import { exec } from 'child_process';
 import { Context } from 'koa';
 import { DingTalkBody } from '../interface';
 import { sendDingDingMessage } from '../utils/dingding';
@@ -29,7 +29,7 @@ export class HomeController {
     const name = query.senderNick;
     const [ order ] = args;
     if (order === '打包') {
-      execSync(`node /root/pangu/entry/advertTemplate/index.js --operater=${name}`);
+      exec(`node /root/pangu/entry/advertTemplate/index.js --operater=${name}`);
     } else {
       sendDingDingMessage('无效命令！');
     }
