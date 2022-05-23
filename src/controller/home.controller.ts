@@ -1,5 +1,9 @@
 import { Controller, Get, Inject, Post } from '@midwayjs/decorator';
+import { execSync } from 'child_process';
 import { Context } from 'koa';
+import { DingTalkBody } from '../interface';
+import { sendDingDingMessage } from '../utils/dingding';
+
 
 @Controller('/')
 export class HomeController {
@@ -14,14 +18,21 @@ export class HomeController {
 
   @Get('/dingding')
   async dingding(): Promise<string> {
-    console.log('get来啦');
     return 'Hello dingding';
   }
 
   @Post('/dingding')
   async dingdingPost(): Promise<string> {
-    const query = this.ctx.query;
-    console.log('post来啦');
-    return JSON.stringify(query, null, 2);
+    const query = this.ctx.request.body as DingTalkBody;
+    if (!query) return;
+    const args = query.text.content.trim().split(' ');
+    const name = query.senderNick;
+    const [ order ] = args;
+    if (order === '打包') {
+      execSync(`node /root/pangu/entry/advertTemplate/index.js --operater=${name}`);
+    } else {
+      sendDingDingMessage('无效命令！');
+    }
+    return;
   }
 }
