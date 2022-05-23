@@ -29,7 +29,9 @@ export class HomeController {
     const name = query.senderNick;
     const [ order ] = args;
     if (order === '打包') {
-      exec(`node /root/pangu/entry/advertTemplate/index.js --operater=${name}`);
+      exec(`node /root/pangu/entry/advertTemplate/index.js --operater=${name}`, {
+        cwd: '/root/pangu/'
+      });
     } else {
       sendDingDingMessage('无效命令！');
     }
