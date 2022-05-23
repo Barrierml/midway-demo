@@ -1,8 +1,12 @@
-import { Controller, Get } from '@midwayjs/decorator';
-import { sendDingDingMessage } from '../utils/dingding';
+import { Controller, Get, Inject, Post } from '@midwayjs/decorator';
+import { Context } from 'koa';
 
 @Controller('/')
 export class HomeController {
+
+  @Inject()
+  ctx: Context;
+
   @Get('/')
   async home(): Promise<string> {
     return 'Hello World';
@@ -10,7 +14,13 @@ export class HomeController {
 
   @Get('/dingding')
   async dingding(): Promise<string> {
-    await sendDingDingMessage('你好哇');
+    console.log()
     return 'Hello dingding';
+  }
+
+  @Post('/dingding')
+  async dingdingPost(): Promise<string> {
+    const query = this.ctx.query;
+    return JSON.stringify(query, null, 2);
   }
 }
