@@ -37,4 +37,13 @@ export class HomeController {
     }
     return;
   }
+
+  @Get('/githubProcess')
+  async githubProcess(): Promise<string> {
+    await sendDingDingMessage('github automation');
+    exec(`node /root/pangu/entry/advertTemplate/index.js --operater=${'github自动流水线'}`, {
+      cwd: '/root/pangu/'
+    });
+    return;
+  }
 }
